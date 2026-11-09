@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DigiVoter</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#EFE6C8;--card:#F6F0DA;--green:#1F6F4A;--navy:#0B1220;--gold:#C9A24A;--saf:#FF9933;--ig:#138808;--ink:#1A1A1A;--line:#0002}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,system-ui,sans-serif;min-height:100vh}
+h1,h2,h3,.logo{font-family:'Playfair Display',Georgia,serif;margin:0}
+.hide{display:none!important}
+#intro{position:fixed;inset:0;z-index:50;transition:opacity 1s}
+#intro.out{opacity:0;pointer-events:none}
+#cv{width:100%;height:100%;display:block}
+#skip{position:absolute;right:16px;bottom:16px;background:none;border:1px solid #fff7;color:#fff;border-radius:20px;padding:6px 14px;cursor:pointer}
+.tri{height:4px;background:linear-gradient(90deg,var(--saf) 33%,#fff 33% 66%,var(--ig) 66%)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.4rem;color:var(--green);cursor:pointer}
+nav div button,nav div a{background:none;border:1px solid var(--line);border-radius:20px;padding:6px 14px;margin-left:6px;cursor:pointer;font:inherit;font-size:.85rem;color:var(--ink)}
+main{max-width:960px;margin:0 auto;padding:10px 20px 40px}
+#landing{text-align:center;padding:50px 0 30px;position:relative}
+#motif{position:absolute;left:50%;top:0;transform:translateX(-50%);width:420px;max-width:90%;opacity:.07;z-index:-1}
+.badge{display:inline-block;border:1px solid var(--green);color:var(--green);border-radius:20px;padding:5px 14px;font-size:.78rem;letter-spacing:.04em}
+#landing h1{font-size:clamp(2.2rem,7vw,4rem);margin:22px 0 12px}
+#landing h1 span{color:var(--green)}
+.sub{max-width:520px;margin:0 auto 26px;color:#444}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:13px 24px;font:600 .85rem Inter;letter-spacing:.08em;cursor:pointer;width:100%}
+.btn.g{background:var(--green)}.btn:disabled{opacity:.5;cursor:not-allowed}
+#landing .btn{width:auto}
+.chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.chips span{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:.8rem}
+.card{background:var(--card);border-radius:16px;padding:22px;box-shadow:0 6px 24px #0001;border:1px solid #0001}
+.card h3{margin-bottom:14px;font-size:1.25rem}
+.narrow{max-width:420px;margin:30px auto}
+label{display:block;font-size:.78rem;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=password],input[type=number]{width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;background:#fffa;font:inherit}
+input:focus,button:focus-visible{outline:2px solid var(--green)}
+.tabs{display:flex;gap:6px;margin-bottom:8px}
+.tabs button{flex:1;padding:9px;border:0;border-radius:8px;background:#0001;cursor:pointer;font:inherit;font-weight:600}
+.tabs button.on{background:var(--green);color:#fff}
+.msg{margin-top:12px;font-size:.88rem;min-height:1.2em}.msg.err{color:#b3261e}.msg.ok{color:var(--green)}
+.title{text-align:center;margin:26px 0 20px}.title h2{font-size:2rem}.title p{color:#555;margin:6px 0 0}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+.cand{display:flex;align-items:center;gap:12px;padding:12px;border:2px solid var(--line);border-radius:12px;margin-bottom:8px;cursor:pointer;background:#fff7}
+.cand.sel{border-color:var(--green);background:#1f6f4a14}
+.dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700}
+.cand small{color:#555;display:block}
+.chk{display:flex;gap:8px;align-items:center;margin:12px 0;font-size:.85rem}
+.status{text-align:center;padding:24px 8px}.status .ic{font-size:2.2rem;color:var(--green)}
+.status h4{font:700 1.2rem 'Playfair Display',serif;margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:18px}
+.tile{background:var(--card);border-radius:14px;padding:16px;text-align:center;border:1px solid #0001}
+.tile b{font:700 1.8rem 'Playfair Display',serif;display:block;color:var(--green)}
+.bar{margin:10px 0}.bar div{height:12px;border-radius:6px;background:#0001;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--saf),var(--ig));transition:width 1s}
+.banner{background:var(--navy);color:#fff;border-radius:12px;padding:12px;text-align:center;margin-top:14px;border-bottom:4px solid var(--gold)}
+.row{display:flex;gap:8px}.row input{flex:1}.row .btn{width:auto}
+footer{text-align:center;font-size:.78rem;color:#555;padding:20px}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:10px;opacity:0;transition:opacity .3s;z-index:60}
+#toast.on{opacity:1}
+</style></head>
+<body>
+<div id="intro"><canvas id="cv"></canvas><button id="skip">Skip ›</button></div>
+
+<div id="app" class="hide">
+<div class="tri"></div>
+<nav><span class="logo" onclick="go('landing')">☸ DigiVoter</span>
+<div><button id="langBtn">EN | हिन्दी</button><button id="adminBtn" data-t="adminLogin">Admin</button><button id="outBtn" class="hide" data-t="logout">Logout</button></div></nav>
+<main>
+<section id="landing"><div id="motif"></div>
+<span class="badge" data-t="badge">Secure Digital Voting Simulation</span>
+<h1><span data-t="h1a">Every Vote.</span> <span data-t="h1b">Counts.</span></h1>
+<p class="sub" data-t="sub"></p>
+<button class="btn g" id="enter" data-t="enter">ENTER VOTING BOOTH →</button>
+<div class="chips"><span data-t="c1"></span><span data-t="c2"></span><span data-t="c3"></span></div>
+</section>
+
+<section id="auth" class="hide"><div class="card narrow">
+<div class="tabs" id="tabs"><button id="tLogin" class="on" data-t="login">Login</button><button id="tReg" data-t="register">Register</button></div>
+<h3 id="authT" class="hide"></h3>
+<label data-t="vid">Voter ID</label><input type="text" id="aid" autocomplete="off">
+<div id="regOnly" class="hide"><label data-t="name">Name</label><input type="text" id="aname"><label data-t="age">Age</label><input type="number" id="aage" min="1"></div>
+<label data-t="pass">Password</label><input type="password" id="apass">
+<br><button class="btn" id="submit"></button><div class="msg" id="amsg"></div>
+</div></section>
+
+<section id="booth" class="hide">
+<div class="title"><h2 data-t="boothT">Cast Your Vote</h2><p data-t="boothS"></p></div>
+<div class="two"><div class="card"><h3 id="bName"></h3><div id="cands"></div>
+<label class="chk"><input type="checkbox" id="conf"><span data-t="confirm"></span></label>
+<button class="btn g" id="castBtn" data-t="cast">CAST VOTE →</button><div class="msg" id="bmsg"></div></div>
+<div class="card"><h3 data-t="statusT">Election Status</h3><div class="status" id="status"></div></div></div>
+</section>
+
+<section id="admin" class="hide">
+<div class="title"><h2 data-t="adminT">Admin Dashboard</h2></div>
+<div class="stats" id="tiles"></div>
+<div class="two"><div class="card"><h3 data-t="results">Results</h3><div id="bars"></div><div class="banner" id="winner"></div></div>
+<div><div class="card" style="margin-bottom:18px"><h3 data-t="turnout">Turnout</h3><div id="ring" style="text-align:center"></div></div>
+<div class="card"><h3 data-t="addC">Add Candidate</h3><label data-t="cname">Name</label><input type="text" id="cn"><label data-t="cparty">Party</label><input type="text" id="cp"><br><button class="btn g" id="addBtn" data-t="add">ADD</button><div class="msg" id="cmsg"></div></div></div></div>
+</section>
+</main>
+<footer data-t="foot">Educational simulation. Not for real elections.</footer>
+</div>
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let token=null,lang='en',mode='login',adminMode=false,refresh=null;
+const T={en:{badge:'Secure Digital Voting Simulation',h1a:'Every Vote.',h1b:'Counts.',sub:'Register, verify, and cast your vote in a simple, transparent election.',enter:'ENTER VOTING BOOTH →',c1:'One Voter, One Vote',c2:'Age 18+ Verified',c3:'Live Results',login:'Login',register:'Register',vid:'Voter ID',name:'Name',age:'Age',pass:'Password',logout:'Logout',adminLogin:'Admin',adminT:'Admin Dashboard',boothT:'Cast Your Vote',boothS:'Select your candidate and confirm your vote.',confirm:'I confirm I am an eligible voter',cast:'CAST VOTE →',statusT:'Election Status',wait:'Awaiting Vote',waitS:'Select a candidate to record your vote.',rec:'Vote Recorded ✓',total:'Total votes cast',done:'You have already voted. Thank you!',results:'Results',turnout:'Turnout',addC:'Add Candidate',cname:'Candidate name',cparty:'Party',add:'ADD',reg:'Registered voters',cast2:'Votes cast',foot:'Educational simulation. Not for real elections.',welcome:'Welcome, '},
+hi:{badge:'सुरक्षित डिजिटल मतदान सिमुलेशन',h1a:'हर वोट',h1b:'मायने रखता है।',sub:'पंजीकरण करें, सत्यापित हों और एक सरल, पारदर्शी चुनाव में अपना वोट डालें।',enter:'मतदान कक्ष में प्रवेश करें →',c1:'एक मतदाता, एक वोट',c2:'18+ आयु सत्यापित',c3:'लाइव परिणाम',login:'लॉगिन',register:'पंजीकरण',vid:'मतदाता पहचान संख्या',name:'नाम',age:'आयु',pass:'पासवर्ड',logout:'लॉग आउट',adminLogin:'एडमिन',adminT:'एडमिन डैशबोर्ड',boothT:'अपना वोट डालें',boothS:'अपना उम्मीदवार चुनें और वोट की पुष्टि करें।',confirm:'मैं पुष्टि करता/करती हूँ कि मैं पात्र मतदाता हूँ',cast:'वोट डालें →',statusT:'चुनाव स्थिति',wait:'वोट की प्रतीक्षा',waitS:'वोट दर्ज करने के लिए उम्मीदवार चुनें।',rec:'वोट दर्ज हुआ ✓',total:'कुल डाले गए वोट',done:'आप वोट दे चुके हैं। धन्यवाद!',results:'परिणाम',turnout:'मतदान प्रतिशत',addC:'उम्मीदवार जोड़ें',cname:'उम्मीदवार का नाम',cparty:'पार्टी',add:'जोड़ें',reg:'पंजीकृत मतदाता',cast2:'डाले गए वोट',foot:'शैक्षणिक सिमुलेशन। वास्तविक चुनावों के लिए नहीं।',welcome:'स्वागत है, '}};
+const t=k=>T[lang][k]||k;
+function applyLang(){$$('[data-t]').forEach(e=>e.textContent=t(e.dataset.t));document.documentElement.lang=lang;setAuth();refresh&&refresh()}
+$('#langBtn').onclick=()=>{lang=lang==='en'?'hi':'en';applyLang()};
+
+async function call(p,b={}){try{const r=await fetch('/api/'+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...b,token})});return await r.json()}catch(e){return{success:false,message:'Cannot reach the server. Is the Java server running?'}}}
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2600)}
+function go(id){['landing','auth','booth','admin'].forEach(s=>$('#'+s).classList.toggle('hide',s!==id));if(id==='landing'||id==='auth')refresh=null;scrollTo(0,0)}
+function msg(el,m,ok){el.textContent=m;el.className='msg '+(ok?'ok':'err')}
+
+/* ---------- auth ---------- */
+function setAuth(){const reg=mode==='register'&&!adminMode;$('#regOnly').classList.toggle('hide',!reg);$('#tabs').classList.toggle('hide',adminMode);$('#authT').classList.toggle('hide',!adminMode);$('#authT').textContent=t('adminLogin')+' · '+t('login');$('#tLogin').classList.toggle('on',!reg);$('#tReg').classList.toggle('on',reg);$('#submit').textContent=(reg?t('register'):t('login')).toUpperCase()+' →'}
+function openAuth(a,m){adminMode=a;mode=m||'login';$('#amsg').textContent='';$('#aid').value='';$('#apass').value='';go('auth');setAuth()}
+$('#enter').onclick=()=>openAuth(false);$('#adminBtn').onclick=()=>openAuth(true);
+$('#tLogin').onclick=()=>{mode='login';setAuth()};$('#tReg').onclick=()=>{mode='register';setAuth()};
+$('#submit').onclick=async()=>{
+ const id=$('#aid').value,pw=$('#apass').value,m=$('#amsg');
+ if(mode==='register'&&!adminMode){const r=await call('register',{id,name:$('#aname').value,age:$('#aage').value,password:pw});
+  if(r.success){msg(m,r.message,true);mode='login';setAuth()}else msg(m,r.message)}
+ else{const r=await call(adminMode?'admin-login':'login',{id,password:pw});
+  if(!r.success)return msg(m,r.message);token=r.data.token;$('#outBtn').classList.remove('hide');$('#adminBtn').classList.add('hide');
+  r.data.role==='admin'?loadAdmin():loadBooth()}};
+$('#outBtn').onclick=async()=>{await call('logout');token=null;$('#outBtn').classList.add('hide');$('#adminBtn').classList.remove('hide');go('landing')};
+
+/* ---------- voter booth ---------- */
+let pick=null,justVoted=null;
+function ring(el,pct,txt){el.innerHTML=`<svg viewBox="0 0 100 100" width="130"><circle cx="50" cy="50" r="42" fill="none" stroke="#1f6f4a22" stroke-width="8"/><circle class="rc" cx="50" cy="50" r="42" fill="none" stroke="#1F6F4A" stroke-width="8" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264" transform="rotate(-90 50 50)" style="transition:stroke-dashoffset 1.2s"/><text x="50" y="56" text-anchor="middle" font-size="15" font-weight="700">${esc(txt)}</text></svg>`;requestAnimationFrame(()=>requestAnimationFrame(()=>el.querySelector('.rc').style.strokeDashoffset=264*(1-pct/100)))}
+async function loadBooth(){go('booth');refresh=renderBooth;pick=null;justVoted=null;$('#conf').checked=false;$('#bmsg').textContent='';await renderBooth()}
+async function renderBooth(){
+ const c=(await call('candidates')).data||[],s=await call('status');if(!s.success){toast(s.message);return}
+ const col=['#1F6F4A','#FF9933','#0B5FA5','#8E3B8E','#C9A24A','#B3261E'];
+ $('#bName').textContent=t('welcome')+s.data.name;
+ $('#cands').innerHTML=c.length?c.map((x,i)=>`<div class="cand${pick===x.id?' sel':''}" data-id="${x.id}"><div class="dot" style="background:${col[i%6]}">${esc(x.name[0])}</div><div><b>${esc(x.name)}</b><small>${esc(x.party)}</small></div></div>`).join(''):'<p>No candidates yet.</p>';
+ $$('.cand').forEach(e=>e.onclick=()=>{if(s.data.hasVoted)return;pick=+e.dataset.id;$$('.cand').forEach(z=>z.classList.toggle('sel',z===e))});
+ $('#castBtn').disabled=s.data.hasVoted;
+ const st=$('#status');
+ if(s.data.hasVoted){st.innerHTML='<div id="rg"></div><h4>'+t('rec')+'</h4><p>'+(justVoted?'<b>'+esc(justVoted)+'</b><br>':'')+t('done')+'</p><p>'+t('total')+': <b>'+s.data.totalVotes+'</b></p>';ring($('#rg'),100,'✓')}
+ else st.innerHTML='<div class="ic">◈</div><h4>'+t('wait')+'</h4><p>'+t('waitS')+'</p>'}
+$('#castBtn').onclick=async()=>{const m=$('#bmsg');
+ if(!pick)return msg(m,'Please select a candidate.');if(!$('#conf').checked)return msg(m,'Please tick the confirmation box.');
+ const r=await call('vote',{candidateId:pick});if(!r.success)return msg(m,r.message);
+ justVoted=r.data.confirmation;msg(m,r.message,true);toast('✓ '+r.message);renderBooth()};
+
+/* ---------- admin ---------- */
+async function loadAdmin(){go('admin');refresh=renderAdmin;await renderAdmin()}
+async function renderAdmin(){
+ const r=await call('results');if(!r.success){toast(r.message);return}const d=r.data;
+ $('#tiles').innerHTML=[[t('reg'),d.registered],[t('cast2'),d.votesCast],[t('turnout'),d.turnout+'%'],['#',d.candidates.length]].map(x=>`<div class="tile"><b>${x[1]}</b>${x[0]}</div>`).join('');
+ $('#bars').innerHTML=d.candidates.map(c=>{const p=d.votesCast?Math.round(c.votes*100/d.votesCast):0;return`<div class="bar"><b>${esc(c.name)}</b> <small>(${esc(c.party)})</small> — ${c.votes}<div><i style="width:${p}%"></i></div></div>`}).join('');
+ $('#winner').textContent=d.winner;ring($('#ring'),d.turnout,d.turnout+'%')}
+$('#addBtn').onclick=async()=>{const r=await call('add-candidate',{name:$('#cn').value,party:$('#cp').value});msg($('#cmsg'),r.message,r.success);if(r.success){$('#cn').value=$('#cp').value='';renderAdmin()}};
+
+/* ---------- landing motif ---------- */
+(()=>{let s='<svg viewBox="-100 -100 200 200" fill="none" stroke="#0B1220" stroke-width="2"><circle r="92"/><circle r="14"/>';for(let i=0;i<24;i++){const a=i*Math.PI/12;s+=`<line x1="${14*Math.cos(a)}" y1="${14*Math.sin(a)}" x2="${90*Math.cos(a)}" y2="${90*Math.sin(a)}"/>`}$('#motif').innerHTML=s+'</svg>'})();
+
+/* ---------- cinematic intro (canvas) ---------- */
+(()=>{
+ const c=$('#cv'),x=c.getContext('2d');let W,H,t0=performance.now(),ended=false;
+ const stars=[...Array(100)].map(()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.3,p:Math.random()*6}));
+ const icons=['🗳️','☝️','📜','⭐','🇮🇳'];
+ const mix=(a,b,k)=>{const f=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)),A=f(a),B=f(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*k)).join()+')'};
+ const cl=(v,a,b)=>Math.min(1,Math.max(0,(v-a)/(b-a)));
+ function size(){W=c.width=innerWidth;H=c.height=innerHeight}size();addEventListener('resize',size);
+ function chakra(cx,cy,R,rot,col){x.save();x.translate(cx,cy);x.rotate(rot);x.strokeStyle=col;x.lineWidth=Math.max(1.5,R/38);x.beginPath();x.arc(0,0,R,0,7);x.stroke();x.beginPath();x.arc(0,0,R*.14,0,7);x.stroke();for(let i=0;i<24;i++){x.rotate(Math.PI/12);x.beginPath();x.moveTo(R*.14,0);x.lineTo(R*.95,0);x.stroke()}x.restore()}
+ function end(){if(ended)return;ended=true;$('#intro').classList.add('out');$('#app').classList.remove('hide');applyLang();setTimeout(()=>$('#intro').remove(),1100)}
+ $('#skip').onclick=end;
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)end();
+ function frame(now){
+  if(ended)return;const t=(now-t0)/1000;if(t>9.5)return end();
+  const k=cl(t,2,3.5),cx=W/2,cy=H*.42,R=Math.min(W,H)*.15;
+  x.fillStyle=mix('#EFE6C8','#0B1220',k);x.fillRect(0,0,W,H);
+  stars.forEach(s=>{x.globalAlpha=k*(.4+.6*Math.abs(Math.sin(t*1.5+s.p)));x.fillStyle='#fff';x.beginPath();x.arc(s.x*W,s.y*H,s.r,0,7);x.fill()});x.globalAlpha=1;
+  // glowing green sphere + chakra (fades as the ballot box appears)
+  const a1=1-cl(t,4.3,5.3);
+  if(a1>0){x.globalAlpha=a1*cl(t,0,1);const g=x.createRadialGradient(cx,cy,R*.2,cx,cy,R*1.3);g.addColorStop(0,'#5fe0a8');g.addColorStop(.7,'#2fb37e');g.addColorStop(1,'#2fb37e00');x.fillStyle=g;x.beginPath();x.arc(cx,cy,R*1.3,0,7);x.fill();chakra(cx,cy,R*.75,t*.6,mix('#0B1220','#ffffff',k));x.globalAlpha=1}
+  // tricolour orbit rings with travelling dots
+  const ra=cl(t,3,4);
+  if(ra>0)['#FF9933','#ffffff','#138808'].forEach((col,i)=>{const rx=R*(1.9+i*.35),ry=R*(.55+.28*i),rot=t*(.25+.12*i)+i*1.1;x.save();x.globalAlpha=ra*.9;x.translate(cx,cy);x.rotate(rot);x.strokeStyle=col;x.lineWidth=2;x.beginPath();x.ellipse(0,0,rx,ry,0,0,7);x.stroke();const d=t*(1.2+i*.4);x.fillStyle=col;x.shadowColor=col;x.shadowBlur=12;x.beginPath();x.arc(rx*Math.cos(d),ry*Math.sin(d),5,0,7);x.fill();x.restore()});
+  // ballot box (rounded-arch shape), saffron ring, falling vote slip
+  const ba=cl(t,4.5,5.5);
+  if(ba>0){x.save();x.globalAlpha=ba;x.translate(cx,cy+R*.1);const w=R*.8,h=R*1.05;x.fillStyle='#34d399';x.beginPath();x.moveTo(-w,h);x.lineTo(-w,h*.1);x.bezierCurveTo(-w,-h*.7,-w*.3,-h*1.2,0,-h*1.45);x.bezierCurveTo(w*.3,-h*1.2,w,-h*.7,w,h*.1);x.lineTo(w,h);x.quadraticCurveTo(0,h*1.3,-w,h);x.fill();
+   x.strokeStyle='#FF9933';x.lineWidth=R/9;x.beginPath();x.arc(0,0,R*.2,0,7);x.stroke();
+   const sy=-R*2+cl(t,5.5,6.6)*R*1.75;x.fillStyle='#fff';x.globalAlpha=ba*(1-cl(t,6.5,6.8));x.fillRect(-R*.22,sy,R*.44,R*.3);x.restore()}
+  // golden ripples
+  if(t>5.5)for(let i=0;i<3;i++){const p=((t-5.5)*.35+i/3)%1;x.strokeStyle='#C9A24A';x.globalAlpha=(1-p)*.8;x.lineWidth=3;x.beginPath();x.arc(cx,cy,R*(1.5+p*3),0,7);x.stroke()}x.globalAlpha=1;
+  // constellation of election icons joined by thin lines
+  const ca=cl(t,4,5);
+  if(ca>0){const pts=icons.map((ic,i)=>{const a=t*.15+i*1.26;return[cx+Math.cos(a)*R*3.1,cy+Math.sin(a)*R*1.9]});x.globalAlpha=ca*.5;x.strokeStyle='#fff';x.lineWidth=1;x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();x.stroke();x.globalAlpha=ca;x.font=Math.round(R*.3)+'px serif';x.textAlign='center';pts.forEach((p,i)=>x.fillText(icons[i],p[0],p[1]+R*.1))}x.globalAlpha=1;
+  // title
+  const ta=cl(t,6.6,7.8);
+  if(ta>0){x.globalAlpha=ta;x.fillStyle='#E8D08A';x.textAlign='center';x.font='700 '+Math.round(Math.min(W*.075,R*.55))+'px "Playfair Display",Georgia,serif';x.letterSpacing='0.25em';x.fillText('DIGIVOTER',cx,cy+R*2.3);x.letterSpacing='0.15em';x.fillStyle='#fff';x.font='400 '+Math.round(R*.2)+'px Inter,sans-serif';x.fillText('EVERY VOTE COUNTS',cx,cy+R*2.75);x.letterSpacing='0px';x.globalAlpha=1}
+  requestAnimationFrame(frame)}
+ requestAnimationFrame(frame);
+})();
+</script></body></html>
